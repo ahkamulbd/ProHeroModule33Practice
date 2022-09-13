@@ -23,9 +23,33 @@ const displayCountries = countries => {
         countryDiv.innerHTML = `
             <h3>Name: ${country.name.common}</h3>
             <p>Capital: ${country.capital ? country.capital[0] : 'No Capital'}</p>
+            <button onclick = "loadCountryDetail('${country.cca2}')">Details</button>
         `;
         countriesContainer.appendChild(countryDiv);
 
     });
 }
+
+const loadCountryDetail = (code) => {
+    //https: '//restcountries.com/v3.1/alpha/{code}'
+    const url = `https://restcountries.com/v3.1/alpha/${code}`
+    //console.log('get country detail', code);
+    //console.log(url);
+
+    fetch(url)
+        .then(res => res.json())
+        //.then(data => console.log(data[0]));
+        .then(data => displayCountryDetail(data[0]))
+}
+
+const displayCountryDetail = country => {
+    console.log(country);
+    const loadCountryDetail = document.getElementById('country-detail');
+
+    loadCountryDetail.innerHTML = `
+        <h2>Details: ${country.name.common}</h2>
+        <img src = "${country.flags.png}">
+    `
+}
+
 loadCountries();
